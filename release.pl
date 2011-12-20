@@ -57,7 +57,7 @@ prompt_yN("Do-over?") && goto write_changelog;
 @new_log = map { "$prefix$_" } @new_log;
 say "Last version: $last_version $last_timestamp";
 my $increment = (1 / 10 ** length(($last_version =~ /\.(\d+)$/)[0]));
-my $new_version = $last_version + $increment;
+my $new_version = sprintf('%.2f', $last_version + $increment);
 my $new_timestamp = DateTime->now->strftime('%Y-%m-%d');
 say "New version: $new_version $new_timestamp";
 
