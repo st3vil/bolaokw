@@ -38,22 +38,25 @@ for (@recent_commits) {
     say $_->{message} ."  ".
     $_->{attr}->{date} ."  ". $_->{attr}->{author};
 }
-say "";
-say "Proposed changelog:";
-for (@new_log) {
-    chomp;
-    say $_;
-}
-unless ("dont") {
-    write_changelog: @new_log = ();
+my $say_changes = sub {
+    say "";
+    say "Proposed changelog:";
+    for (@new_log) {
+        chomp;
+        say $_;
+    }
+};
+$say_changes->();
+while (prompt_yN("Do-over?")) {
+    @new_log = ();
     say "Enter a blank line when done";
     while (1) {
         my $line = <>; chomp $line;
         last if $line eq "";
         push @new_log, $line;
     }
+    $say_changes->();
 }
-prompt_yN("Do-over?") && goto write_changelog;
 @new_log = map { "$prefix$_" } @new_log;
 say "Last version: $last_version $last_timestamp";
 my $increment = (1 / 10 ** length(($last_version =~ /\.(\d+)$/)[0]));
