@@ -75,7 +75,7 @@ write_file($changelog,
 );
 
 my $makepl = read_file("Makefile.PL");
-my ($version_from) = $makepl =~ /^version_from\s+\("(.+)"\);$/gsm;
+my ($version_from) = $makepl =~ /^\s*version_from.+?['"](.+?)['"].*?$/gsmi;
 my @code = read_file($version_from);
 @code = map {
     unless (/^our \$VERSION = "(.+)";$/gsm) {
